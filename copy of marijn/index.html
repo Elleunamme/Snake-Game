@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+<style>
+table {
+  border: 1px solid black;
+  width: 600px;
+  height: 600px;
+}
+
+th, td {
+  max-width: 30px;
+  width: 30px;
+  min-width: 30px;
+  
+  max-height: 30px;
+  height: 30px;
+  min-height: 30px;
+}
+
+.menu-bar {
+  width: 600px;
+  height: 60px;
+  display: block;
+  text-align: center;
+}
+
+.black {
+	background-color: black;
+}
+
+.grey {
+	background-color: grey;
+}
+
+.green {
+	background-color: green;
+}
+
+.red {
+	background-color: red;
+}
+
+h1 {
+	display: inline;
+}
+
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+
+</style>
+</head>
+<body>
+
+<div class="menu-bar">
+<h1>Snake</h1> <input type="button" onclick="startGame()" class="button" value="Start game"> <h1>Score: </h1><h1 id="score">0</h1>
+</div>
+<table id="myTable"></table>
+
+
+<script>
+	class Rectangle {
+	  constructor(row, column, direction) {
+		this.row = row;
+		this.column = column;
+		this.direction = direction;
+	  }
+	}
+	
+	const isSnakeTile = (row, column) => {
+	  return undefined != snakeArray.find(
+		r => r.row == row && r.column == column
+	  )
+	}
+	
+	const isSnakeHead = (row, column) => {
+	  return snakeArray[0].row == row && snakeArray[0].column == column;
+	}
+	
+	const isFoodTile = (row, column) => {
+	  return foodTile.row == row && foodTile.column == column;
+	}
+	
+	const isFoodEatable = () => {
+	  return snakeArray[0].row == foodTile.row && snakeArray[0].column == foodTile.column
+	}
+	
+	const generateNewFood = () => {
+	  let row, column;
+	
+	  do {
+		row = Math.floor(Math.random() * maxRow) + minRow;
+		column = Math.floor(Math.random() * maxColumn) + minColumn;
+	  } while (isSnakeTile(row, column));
+	  
+	  return new Rectangle(row, column);
+	  
+	}
+	
+	checkKey = (e) => {
+		e = e || window.event;
+		
+		if(['37', '38', '39', '40'].includes(e.keyCode)){
+			
+		}
+		
+		if (e.keyCode == '37' && oldDirection != 'right') {
+			newDirection = 'left';
+		}
+		else if (e.keyCode == '38' && oldDirection != 'down') {
+			newDirection = 'up';
+		}
+		else if (e.keyCode == '39' && oldDirection != 'left') {
+			newDirection = 'right';
+		}
+		else if (e.keyCode == '40' && oldDirection != 'up') {
+			newDirection = 'down';
+		}
+	}
+	document.onkeydown = checkKey;
+	
+	changeDirection = (newDirection, snakeArray) => {
+		let newRow, newColumn;
+		
+		switch(newDirection) {
+			  case 'left':
+				if(snakeArray[0].column == minColumn){
+				  newColumn = maxColumn - 1;
+				} else {
+				  newColumn = snakeArray[0].column - 1;
+				}
+				newRow = snakeArray[0].row;
+				break;
+			  case 'up':
+				if(snakeArray[0].row == minRow){
+				  newRow = maxRow - 1;
+				} else {
+				  newRow = snakeArray[0].row - 1;
+				}
+				newColumn = snakeArray[0].column;
+				break;
+			  case 'right':
+				if(snakeArray[0].column == maxColumn -1){
+				  newColumn = minColumn;
+				} else {
+				  newColumn = snakeArray[0].column + 1;
+				}
+				newRow = snakeArray[0].row;
+				break;
+			  case 'down':
+				if(snakeArray[0].row == maxRow -1){
+				  newRow = minRow;
+				} else {
+				  newRow = snakeArray[0].row + 1;
+				}
+				newColumn = snakeArray[0].column;
+				break;
+		}
+		
+		if(isSnakeTile(newRow, newColumn)){
+		  alive = false;
+		}
+		
+		snakeArray.unshift(new Rectangle(newRow, newColumn, newDirection));
+		snakeArray.pop();
+	}
+	
+	const freshGame = () => {
+	  oldDirection = false;
+	  newDirection = "";
+	  alive = true;
+	  
+	  snakeArray.length = 0;
+	  const newSnake = new Rectangle(9, 9, newDirection);	
+	  snakeArray.push(new Rectangle(9, 9, newDirection));	
+	  
+	  console.log(snakeArray.length);
+	  
+	  foodTile = generateNewFood();
+	}
+	
+	
+	
+	//Der Anfang des Spiel	
+	const minRow = 0;
+	const minColumn = 0;
+	const maxRow = 10;
+	const maxColumn = 10;
+	
+	let oldDirection; //left up right down
+	let newDirection;
+	let alive;
+	let speed;
+	
+	const snakeArray = [];
+	
+	let foodTile;
+	
+	const render = () => {
+		const myTable = document.getElementById("myTable");
+		
+		myTable.textContent = '';
+		
+		for(let i = minRow; i < maxRow; i++){
+			const tableRow = document.createElement("tr");
+			for(let j = minColumn; j < maxColumn; j++){
+				const tableCel = document.createElement("td");
+				const idString = `${i}=${j}`;
+				tableCel.setAttribute("id", idString);
+				if(isSnakeHead(i, j)){
+				  tableCel.setAttribute("class", "grey");
+				} else if(isSnakeTile(i, j)){
+				  if(alive)
+					tableCel.setAttribute("class", "black");
+				  else
+					tableCel.setAttribute("class", "red");
+				} else if(isFoodTile(i, j)){
+				  tableCel.setAttribute("class", "green");
+				}
+				
+				
+				//if((j + i) % 2 == 0) 
+					//tableCel.setAttribute("class", "black");
+				tableRow.appendChild(tableCel);
+			}
+			myTable.appendChild(tableRow);
+		}
+	}
+	
+	
+	const delay = ms => new Promise(res => setTimeout(res, ms));
+	
+	const startGame = async () => {
+	  freshGame();
+	  while(alive){
+
+		speed = 250 - snakeArray.length * 2.5;
+		speed = speed >= 125 ? speed : 125;
+		
+		
+		await delay(speed);
+		if(newDirection){
+			const length =  snakeArray.length * .55;
+			let score = Math.floor(length * length);
+			document.getElementById("score").innerHTML = score;
+		
+			console.log(newDirection);
+			const lastSnakeTile = snakeArray[snakeArray.length - 1];
+			const lastRow = lastSnakeTile.row;
+			const lastColumn = lastSnakeTile.column;
+			const lastDirection = lastSnakeTile.direction;
+			
+			changeDirection(newDirection, snakeArray);
+			oldDirection = newDirection;
+			
+			if(isFoodEatable()){
+			  foodTile = generateNewFood();
+			  snakeArray.push(new Rectangle(lastRow, lastColumn, lastDirection));
+			}			
+		}
+		render();
+			
+			
+	  }
+	};
+	
+
+	
+	
+</script>
+
+</body>
+</html>
