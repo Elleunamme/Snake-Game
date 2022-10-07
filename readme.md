@@ -25,6 +25,7 @@ The purpose is to create a local frontend two player game with arrow controls an
 - Obstacles
 - Enemies
 - Bonuses
+- Intro
 ### Won't haves
 - Diagonal direction
 - Backend (for now)
