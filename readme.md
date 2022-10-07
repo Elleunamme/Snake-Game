@@ -20,12 +20,13 @@ The purpose is to create a local frontend two player game with arrow controls an
 - Art
     - Chicks for food
     - Grassy background
-    - Obstacles in form of rocks
-    - Enemies potentially eagles taking up 9x9 space
     - Curve around the bend corner for body
 - Sound effects
-- Must have a score
+- Score
 ### Could haves
+- Art
+    - Enemies potentially eagles taking up 3x3 space
+    - Obstacles in form of rocks or lakes
 - Rainbow Mode (slide through your own snake)
 - Obstacles
 - Enemies
@@ -33,6 +34,8 @@ The purpose is to create a local frontend two player game with arrow controls an
 - Intro
 - Alternating slithering snake pattern
 - Second player
+- Credits / outro
+- Achievements
 ### Won't haves
 - Diagonal direction
 - Backend (for now)
@@ -41,3 +44,19 @@ The purpose is to create a local frontend two player game with arrow controls an
 - https://www.w3schools.com/js/default.asp (praktische dingen over javascript)
 - https://en.wikipedia.org/wiki/Don%27t_repeat_yourself (DRY)
 - https://nl.wikipedia.org/wiki/GRASP (Complexere object oriented design patterns)
+
+## Verbs
+- Playboard
+- Snake
+- SnakeTile
+- Food
+- Tile
+- Startbutton
+- Score
+- Obstacle
+
+## Art tiles
+- EmptyTile
+- SnakeTile (head, tail, vertical, horizontal, northeast, southeast, southwest, northwest)
+- SnakeTile (headverticaldead, headhorizontaldead)
+- FoodTile (chick)
