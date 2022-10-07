@@ -14,18 +14,24 @@ The purpose is to create a local frontend two player game with arrow controls an
 ## MoSCoW Gameplay
 ### Must haves
 - Must be playable
-- Must have a score
 - Must have a start button
 - Must have a frame
 ### Should haves
-- Sound effects
 - Art
+    - Chicks for food
+    - Grassy background
+    - Obstacles in form of rocks
+    - Enemies potentially eagles taking up 9x9 space
+    - Curve around the bend corner for body
+- Sound effects
+- Must have a score
 ### Could haves
 - Rainbow Mode (slide through your own snake)
 - Obstacles
 - Enemies
 - Bonuses
 - Intro
+- Alternating slithering snake pattern
 ### Won't haves
 - Diagonal direction
 - Backend (for now)
