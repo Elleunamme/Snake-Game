@@ -32,6 +32,7 @@ The purpose is to create a local frontend two player game with arrow controls an
 - Bonuses
 - Intro
 - Alternating slithering snake pattern
+- Second player
 ### Won't haves
 - Diagonal direction
 - Backend (for now)
