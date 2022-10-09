@@ -119,25 +119,30 @@
 
 			}
 
-			if (e.keyCode == '37' /*&& oldDirection != 'right'*/) {
+			// Don't allow the user to commit suicide by reversing direction
+			let superNewLogicDirection = keyQueue[keyQueue.length - 1];
+			if (superNewLogicDirection === undefined) {
+				superNewLogicDirection = currentDirection;
+			}
+
+			if (e.keyCode == '37' && superNewLogicDirection !== 'right') {
 				keyQueue.push('left');
 			}
-			else if (e.keyCode == '38' /*&& oldDirection != 'down'*/) {
+			else if (e.keyCode == '38' && superNewLogicDirection !== 'down') {
 				keyQueue.push('up');
 			}
-			else if (e.keyCode == '39' /*&& oldDirection != 'left'*/) {
+			else if (e.keyCode == '39' && superNewLogicDirection !== 'left') {
 				keyQueue.push('right');
 			}
-			else if (e.keyCode == '40' /*&& oldDirection != 'up'*/) {
+			else if (e.keyCode == '40' && superNewLogicDirection !== 'up') {
 				keyQueue.push('down');
 			}
 
 			// Begin the game by removing the '', push the new direction,
-			// also directly to the newDirection array for the first time.
-			if (newDirection[0] === '') {
-				newDirection.shift();
-				newDirection.push(keyQueue[0]);
-				keyQueue.shift();
+			// also directly to the currentDirection array for the first time.
+			if (currentDirection === '') {
+				console.log('startGame');
+				currentDirection = keyQueue.shift();
 			}
 
 			console.log(keyQueue);
@@ -145,11 +150,14 @@
 		}
 		document.onkeydown = checkKey;
 
-		changeDirection = (newKey, newDirection, snakeArray) => {
+		decideDirection = (newKey, snakeArray) => {
 			let newRow, newColumn;
 
-			// if (newDirection.length > 1) {
-			switch (newDirection[0]) {
+			if (newKey) {
+				currentDirection = newKey;
+			}
+
+			switch (currentDirection) {
 				case 'left':
 					if (snakeArray[0].column == minColumn) {
 						newColumn = maxColumn - 1;
@@ -183,34 +191,23 @@
 					newColumn = snakeArray[0].column;
 					break;
 			}
-			// }
 
 			if (isSnakeTile(newRow, newColumn)) {
 				alive = false;
 			}
 
-
-			if (newKey) {
-				newDirection.push(newKey);
-			}
-
-			if (newDirection.length > 1) {
-				newDirection.shift();
-			}
-
-			snakeArray.unshift(new Rectangle(newRow, newColumn, newDirection[0]));
+			snakeArray.unshift(new Rectangle(newRow, newColumn, currentDirection));
 			snakeArray.pop();
 		}
 
 		const freshGame = () => {
-			oldDirection = false;
-			newDirection = [''];
+			currentDirection = '';
 			keyQueue = [];
 			alive = true;
 
 			snakeArray.length = 0;
-			const newSnake = new Rectangle(9, 9, newDirection[0]);
-			snakeArray.push(new Rectangle(9, 9, newDirection[0]));
+			const newSnake = new Rectangle(9, 9, currentDirection);
+			snakeArray.push(new Rectangle(9, 9, currentDirection));
 
 			foodTile = generateNewFood();
 		}
@@ -223,8 +220,7 @@
 		const maxRow = 10;
 		const maxColumn = 10;
 
-		let oldDirection; //left up right down
-		let newDirection;
+		let currentDirection; // left up right down
 		let keyQueue;
 		let alive;
 		let speed;
@@ -276,7 +272,7 @@
 
 
 				await delay(speed);
-				if (newDirection[0]) {
+				if (currentDirection) {
 					const length = snakeArray.length * .55;
 					let score = Math.floor(length * length);
 					document.getElementById("score").innerHTML = score;
@@ -286,10 +282,7 @@
 					const lastColumn = lastSnakeTile.column;
 					const lastDirection = lastSnakeTile.direction;
 
-					changeDirection(keyQueue.shift(), newDirection, snakeArray);
-					oldDirection = newDirection[0];
-					console.log('newDirection', newDirection);
-					console.log('oldDirection', oldDirection);
+					decideDirection(keyQueue.shift(), snakeArray);
 
 					if (isFoodEatable()) {
 						foodTile = generateNewFood();
