@@ -1,5 +1,17 @@
 console.log("Tile")
 // Abstract
 class Tile {
-    // string background
+    tileCssClass;
+
+    constructor(tileCssClass) {
+        this.tileCssClass = tileCssClass;
+    }
+
+    getTileCssClass = () => this.tileCssClass;
+}
+
+class BackgroundTile extends Tile {
+    constructor(){
+        super('empty-background-tile');
+    }
 }

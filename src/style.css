@@ -1,0 +1,29 @@
+
+
+.playboard-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+#playboard {
+    width: 1000px;
+    height: 500px;
+    border-spacing: 0;
+}
+
+body{
+    text-align: center;
+}
+
+
+.empty-background-tile {
+    background-image: url('img/background.jpg');
+}
+
+.snake-tile {
+    background-color: darkred;
+}
+
+.snake-tile-alternative {
+    background-color: purple;
+}
