@@ -56,6 +56,8 @@ The purpose is to create a local frontend two player game with arrow controls an
 - Obstacle
 
 ## Art tiles
+<!--background image must be square and was resized to 100 px in size. can be reenlarged.-->
+
 - EmptyTile
 - SnakeTile (head, tail, vertical, horizontal, northeast, southeast, southwest, northwest)
 - SnakeTile (headverticaldead, headhorizontaldead)
